@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <title>Hello, world!</title>
+</head>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            crossdomain: true,
+            url: 'http://localhost:8080/job4j_todo/add',
+            dataType: 'json'
+        }).done(function (data) {
+            for (var item of data) {
+                var task = JSON.stringify(item);
+                if (item.done == true) {
+                    $('#allItem').append(`<tr><td><input class="checkbox" onclick="fun2(this.value)" type="checkbox" name="update" value='${task}' checked>   ${item.description}</td></tr>`);
+                } else {
+                    $('#allItem').append(`<tr><td><input class="checkbox" onclick="fun2(this.value)" type="checkbox" name="update" value='${task}'>   ${item.description}</td></tr>`);
+                }
+
+            }
+
+        })
+    });
+</script>
+<script>
+    function fun2(value) {
+        $.ajax({
+            type: 'POST',
+            crossdomain: true,
+            url: 'http://localhost:8080/job4j_todo/todo',
+            dataType: 'json',
+            data: {'item': value}
+        })
+    }
+</script>
+<script>
+    function fun1() {
+        $('input[id="fil"]').on('change', function(){
+            var chang = $(this).prop('checked');
+            $.ajax({
+                type: 'GET',
+                crossdomain: true,
+                url:
+                    (chang === true) ? 'http://localhost:8080/job4j_todo/add' : 'http://localhost:8080/job4j_todo/fil',
+                dataType: 'json'
+            }).done(function (data) {
+                $('#allItem').html("")
+                for (var item of data) {
+                    var task = JSON.stringify(item);
+                    if (item.done == true) {
+                        $('#allItem').append(`<tr><td><input onclick="fun2(this.value)" type="checkbox" name="update" value='${task}' checked>   ${item.description}</td></tr>`);
+                    } else {
+                        $('#allItem').append(`<tr><td><input onclick="fun2(this.value)" type="checkbox" name="update" value='${task}'>   ${item.description}</td></tr>`);
+                    }
+                }
+            })
+        });
+    }
+</script>
+
+<body>
+<div type="container">
+    <div id="main">
+        <div id="input" class="container" style="float: left;">
+            <div class="container"
+                 style="float: left; border-bottom: solid #ccc">
+                <label style="padding: 5px;">Все
+                    задания / Невыполненные задания   <input type="checkbox" id="fil" value="fil" onclick="fun1()" checked></label><br>
+            </div>
+            <form action="add" method="post" style="float: left;">
+                <div class="form-group" style="padding: 10px; float: left;">
+                    <textarea style="width: 300px; height: 100px; resize: none" class="form-control" id="description"
+                              name="description" placeholder="Добавить задание"></textarea>
+                    <div class="row float-right"
+                         style="padding: 20px; height: 20px;">
+                        <button type="submit" class="btn btn-success">Добавить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="container" style="float: left;">
+            <form class="qq">
+                <table id="allItem">
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
