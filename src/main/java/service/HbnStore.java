@@ -7,6 +7,8 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -16,6 +18,14 @@ public class HbnStore implements Store {
             .configure().build();
     private final SessionFactory sf = new MetadataSources(registry)
             .buildMetadata().buildSessionFactory();
+
+    private static final class Lazy {
+        private static final Store INST = new HbnStore();
+    }
+
+    public static Store instOf() {
+        return Lazy.INST;
+    }
 
     private <T> T tx(final Function<Session, T> command) {
         final Session session = sf.openSession();
@@ -57,5 +67,17 @@ public class HbnStore implements Store {
     public List<Item> findAll() {
         return this.tx(
                 session -> session.createQuery("from model.Item").list());
+    }
+
+    @Override
+    public List<Item> allOrUnfulfilled() {
+        List<Item> all = findAll();
+        List<Item> task = new ArrayList<>();
+        for (Item item: all) {
+            if (!item.isDone()) {
+                task.add(item);
+            }
+        }
+        return task;
     }
 }

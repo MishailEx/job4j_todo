@@ -17,7 +17,7 @@ public class ToDoServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Store store = new HbnStore();
+        Store store = HbnStore.instOf();
         Item item = GSON.fromJson(req.getParameter("item"), Item.class);
         item.setDone(!item.isDone());
         store.update(item.getId(), item);

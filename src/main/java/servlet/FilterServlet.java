@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class FilterServlet extends HttpServlet {
@@ -20,14 +19,8 @@ public class FilterServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Store store = new HbnStore();
-        Collection<Item> all = store.findAll();
-        Collection<Item> task = new ArrayList<>();
-        for (Item item: all) {
-            if (!item.isDone()) {
-                task.add(item);
-            }
-        }
+        Store store = HbnStore.instOf();
+        Collection<Item> task = store.allOrUnfulfilled();
         resp.setContentType("application/json; charset=utf-8");
         OutputStream output = resp.getOutputStream();
         String json = GSON.toJson(task);

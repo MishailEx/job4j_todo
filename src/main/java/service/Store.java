@@ -9,4 +9,5 @@ public interface Store {
     Item findById(int id);
     boolean update(int id, Item item);
     List<Item> findAll();
+    List<Item> allOrUnfulfilled();
 }

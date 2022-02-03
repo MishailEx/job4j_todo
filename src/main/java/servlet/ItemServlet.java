@@ -22,7 +22,7 @@ public class ItemServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Store store = new HbnStore();
+        Store store = HbnStore.instOf();
         Collection<Item> items = store.findAll();
         resp.setContentType("application/json; charset=utf-8");
         OutputStream output = resp.getOutputStream();
@@ -35,7 +35,7 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("UTF-8");
-        Store store = new HbnStore();
+        Store store = HbnStore.instOf();
         Item item = new Item(req.getParameter("description"),  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), false);
         store.add(item);
         resp.sendRedirect("http://localhost:8080/job4j_todo");
