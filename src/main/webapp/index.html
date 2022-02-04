@@ -21,9 +21,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <title>Hello, world!</title>
-
 </head>
 <script src="script1.js"></script>
+<script src="header.js"></script>
 <script>
     function fun2(value) {
         $.ajax({
@@ -37,7 +37,7 @@
 </script>
 <script>
     function fun1() {
-        $('input[id="fil"]').on('change', function(){
+        $('input[id="fil"]').on('change', function () {
             var chang = $(this).prop('checked');
             $.ajax({
                 type: 'GET',
@@ -59,15 +59,23 @@
         });
     }
 </script>
-
 <body>
 <div type="container">
+    <div class="container">
+    </div>
+    <div id="container1"></div>
     <div id="main">
         <div id="input" class="container" style="float: left;">
-            <div class="container"
-                 style="float: left; border-bottom: solid #ccc">
-                <label style="padding: 5px;">Все
-                    задания / Невыполненные задания   <input type="checkbox" id="fil" value="fil" onclick="fun1()" checked></label><br>
+            <div class="container" id="header" style="float: left;">
+                <ul style="display: block; width: 548px; float: left;">
+                    <li style="display:block; float:left;"></li>
+                </ul>
+            </div>
+            <div class="container" style="float: left; border-bottom: solid #ccc">
+                <label style="padding: 5px;">Все задания / Невыполненные задания
+                    <input type="checkbox" id="fil" value="fil" onclick="fun1()" checked>
+                </label>
+                <br>
             </div>
             <form action="add" method="post" style="float: left;">
                 <div class="form-group" style="padding: 10px; float: left;">

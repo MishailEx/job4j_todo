@@ -3,6 +3,7 @@ package servlet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.Item;
+import model.User;
 import service.HbnStore;
 import service.Store;
 
@@ -20,7 +21,8 @@ public class FilterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Store store = HbnStore.instOf();
-        Collection<Item> task = store.allOrUnfulfilled();
+        User user = (User) req.getSession().getAttribute("user");
+        Collection<Item> task = store.allOrUnfulfilled(user);
         resp.setContentType("application/json; charset=utf-8");
         OutputStream output = resp.getOutputStream();
         String json = GSON.toJson(task);

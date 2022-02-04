@@ -12,8 +12,8 @@ $(document).ready(function () {
             } else {
                 $('#allItem').append(`<tr><td><input class="checkbox" onclick="fun2(this.value)" type="checkbox" name="update" value='${task}'>   ${item.description}</td></tr>`);
             }
-
         }
-
-    })
+    }).fail(function () {
+        $('#allItem').append(`<h1>Войдите в профиль</h1>`);
+    });
 });

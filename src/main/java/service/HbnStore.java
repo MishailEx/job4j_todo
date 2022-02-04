@@ -1,12 +1,14 @@
 package service;
 
 import model.Item;
+import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,14 +66,14 @@ public class HbnStore implements Store {
     }
 
     @Override
-    public List<Item> findAll() {
+    public List<Item> findAll(User user) {
         return this.tx(
-                session -> session.createQuery("from model.Item").list());
+                session -> session.createCriteria(Item.class).add(Restrictions.eq("user", user)).list());
     }
 
     @Override
-    public List<Item> allOrUnfulfilled() {
-        List<Item> all = findAll();
+    public List<Item> allOrUnfulfilled(User user) {
+        List<Item> all = findAll(user);
         List<Item> task = new ArrayList<>();
         for (Item item: all) {
             if (!item.isDone()) {
@@ -79,5 +81,22 @@ public class HbnStore implements Store {
             }
         }
         return task;
+    }
+
+    @Override
+    public User addUser(User user) {
+        this.tx(session -> session.save(user));
+        return user;
+    }
+
+    @Override
+    public User findByName(String findName) {
+        User user = null;
+        List<User> users = this.tx(
+                session -> session.createCriteria(User.class).add(Restrictions.eq("name", findName)).list());
+        if (users.size() == 1) {
+            user = users.get(0);
+        }
+        return user;
     }
 }
