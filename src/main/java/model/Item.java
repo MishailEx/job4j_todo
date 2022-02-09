@@ -1,6 +1,9 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -12,7 +15,8 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String description;
-    private String created;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "YYYY-MM-dd HH:mm:ss", timezone = "Europe/Moscow")
+    private Date created;
     private boolean done;
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -23,7 +27,7 @@ public class Item {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> category = new HashSet<>();
 
-    public Item(int id, String description, String created, boolean done, User user) {
+    public Item(int id, String description, Date created, boolean done, User user) {
         this.id = id;
         this.description = description;
         this.created = created;
@@ -31,7 +35,7 @@ public class Item {
         this.user = user;
     }
 
-    public Item(String description, String created, boolean done, User user) {
+    public Item(String description, Date created, boolean done, User user) {
         this.description = description;
         this.created = created;
         this.done = done;
@@ -57,11 +61,11 @@ public class Item {
         this.description = description;
     }
 
-    public String getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 

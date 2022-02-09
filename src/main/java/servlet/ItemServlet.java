@@ -43,7 +43,7 @@ public class ItemServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         Store store = HbnStore.instOf();
         User user = (User) req.getSession().getAttribute("user");
-        Item item = new Item(req.getParameter("description"),  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), false, user);
+        Item item = new Item(req.getParameter("description"),  new Date(System.currentTimeMillis()), false, user);
         String[] cIds = req.getParameterValues("cIds");
         for (String s: cIds) {
             item.getCategory().add(GSON.fromJson(s, Category.class));
