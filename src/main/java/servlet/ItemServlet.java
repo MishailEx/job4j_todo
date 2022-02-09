@@ -2,12 +2,12 @@ package servlet;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import model.Category;
 import model.Item;
 import model.User;
 import service.HbnStore;
 import service.Store;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,8 +16,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 
 public class ItemServlet extends HttpServlet {
@@ -37,8 +36,6 @@ public class ItemServlet extends HttpServlet {
             output.flush();
             output.close();
         }
-
-
     }
 
     @Override
@@ -47,6 +44,10 @@ public class ItemServlet extends HttpServlet {
         Store store = HbnStore.instOf();
         User user = (User) req.getSession().getAttribute("user");
         Item item = new Item(req.getParameter("description"),  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), false, user);
+        String[] cIds = req.getParameterValues("cIds");
+        for (String s: cIds) {
+            item.getCategory().add(GSON.fromJson(s, Category.class));
+        }
         store.add(item);
         resp.sendRedirect("http://localhost:8080/job4j_todo");
     }

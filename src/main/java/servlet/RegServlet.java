@@ -37,7 +37,6 @@ public class RegServlet extends HttpServlet {
             output.write(json.getBytes(StandardCharsets.UTF_8));
             output.flush();
             output.close();
-            req.getRequestDispatcher("http://localhost:8080/job4j_todo/login.html").forward(req, resp);
         } else {
             user = new User(name, password);
             store.addUser(user);

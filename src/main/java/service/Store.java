@@ -1,5 +1,6 @@
 package service;
 
+import model.Category;
 import model.Item;
 import model.User;
 
@@ -13,4 +14,5 @@ public interface Store {
     List<Item> allOrUnfulfilled(User user);
     User addUser(User user);
     User findByName(String name);
+    List<Category> allCategory();
 }

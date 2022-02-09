@@ -22,8 +22,11 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <title>Hello, world!</title>
 </head>
-<script src="script1.js"></script>
-<script src="header.js"></script>
+</script>
+<script src="header.js?speed=0" defer></script>
+<script src="script1.js?speed=0" defer></script>
+<script src="categories.js?speed=0" defer></script>
+
 <script>
     function fun2(value) {
         $.ajax({
@@ -49,10 +52,14 @@
                 $('#allItem').html("")
                 for (var item of data) {
                     var task = JSON.stringify(item);
+                    var category = '';
+                    for (i in item.category) {
+                        category += item.category[i].name + ' '
+                    }
                     if (item.done == true) {
-                        $('#allItem').append(`<tr><td><input onclick="fun2(this.value)" type="checkbox" name="update" value='${task}' checked>   ${item.description}</td></tr>`);
+                        $('#allItem').append(`<tr><td><input onclick="fun2(this.value)" type="checkbox" name="update" value='${task}' checked>   ${item.description} <br> Категория: ${category} </td></tr>`);
                     } else {
-                        $('#allItem').append(`<tr><td><input onclick="fun2(this.value)" type="checkbox" name="update" value='${task}'>   ${item.description}</td></tr>`);
+                        $('#allItem').append(`<tr><td><input onclick="fun2(this.value)" type="checkbox" name="update" value='${task}'>   ${item.description} <br> Категория: ${category} </td></tr>`);
                     }
                 }
             })
@@ -81,6 +88,9 @@
                 <div class="form-group" style="padding: 10px; float: left;">
                     <textarea style="width: 300px; height: 100px; resize: none" class="form-control" id="description"
                               name="description" placeholder="Добавить задание"></textarea>
+                    <p>Категории</p>
+                    <select style="width: 300px; height: 100px; resize: none" class="form-control" name="cIds" id="cIds" multiple required >
+                    </select>
                     <div class="row float-right"
                          style="padding: 20px; height: 20px;">
                         <button type="submit" class="btn btn-success">Добавить</button>

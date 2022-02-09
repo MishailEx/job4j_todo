@@ -1,5 +1,6 @@
 package service;
 
+import model.Category;
 import model.Item;
 import model.User;
 import org.hibernate.Session;
@@ -67,15 +68,19 @@ public class HbnStore implements Store {
 
     @Override
     public List<Item> findAll(User user) {
-        return this.tx(
-                session -> session.createCriteria(Item.class).add(Restrictions.eq("user", user)).list());
+        Session session = sf.openSession();
+        session.beginTransaction();
+        List<Item> list = session.createQuery("select distinct c from model.Item c join fetch c.category where c.user = :user").setParameter("user", user).list();
+        session.getTransaction().commit();
+        session.close();
+        return list;
     }
 
     @Override
     public List<Item> allOrUnfulfilled(User user) {
         List<Item> all = findAll(user);
         List<Item> task = new ArrayList<>();
-        for (Item item: all) {
+        for (Item item : all) {
             if (!item.isDone()) {
                 task.add(item);
             }
@@ -98,5 +103,11 @@ public class HbnStore implements Store {
             user = users.get(0);
         }
         return user;
+    }
+
+    @Override
+    public List<Category> allCategory() {
+        return this.tx(
+                session -> session.createQuery("select c from Category c", Category.class).list());
     }
 }
