@@ -70,7 +70,9 @@ public class HbnStore implements Store {
     public List<Item> findAll(User user) {
         Session session = sf.openSession();
         session.beginTransaction();
-        List<Item> list = session.createQuery("select distinct c from model.Item c join fetch c.category where c.user = :user").setParameter("user", user).list();
+        List<Item> list = session.createQuery("select distinct c from model.Item c "
+                + "join fetch c.category where c.user = :user")
+                .setParameter("user", user).list();
         session.getTransaction().commit();
         session.close();
         return list;
@@ -96,13 +98,9 @@ public class HbnStore implements Store {
 
     @Override
     public User findByName(String findName) {
-        User user = null;
-        List<User> users = this.tx(
-                session -> session.createCriteria(User.class).add(Restrictions.eq("name", findName)).list());
-        if (users.size() == 1) {
-            user = users.get(0);
-        }
-        return user;
+         return (User) this.tx(
+                session -> session.createQuery("from User where name = :name")
+                        .setParameter("name", findName).uniqueResult());
     }
 
     @Override

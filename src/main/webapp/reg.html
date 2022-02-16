@@ -32,7 +32,8 @@
                 dataType: 'json'
             }).done(function (data) {
                 if (data === 'Пользователь с таким именем уже существует') {
-                    document.location.href = "http://localhost:8080/job4j_todo/login.html";
+                    alert('Пользователь с таким именем уже существует')
+                    document.location.href = "http://localhost:8080/job4j_todo/reg.html";
                 }
             }).fail(function () {
                 document.location.href = "http://localhost:8080/job4j_todo";

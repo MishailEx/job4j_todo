@@ -31,7 +31,7 @@ public class RegServlet extends HttpServlet {
         OutputStream output = resp.getOutputStream();
         String name = req.getParameter("name");
         String password = req.getParameter("password");
-        User user = store.findByName("name");
+        User user = store.findByName(name);
         if (user != null) {
             String json = GSON.toJson("Пользователь с таким именем уже существует");
             output.write(json.getBytes(StandardCharsets.UTF_8));

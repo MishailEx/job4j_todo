@@ -46,20 +46,24 @@
                 type: 'GET',
                 crossdomain: true,
                 url:
-                    (chang === true) ? 'http://localhost:8080/job4j_todo/add' : 'http://localhost:8080/job4j_todo/fil',
+                    (chang === true) ? 'http://localhost:8080/job4j_todo/add.do' : 'http://localhost:8080/job4j_todo/fil',
                 dataType: 'json'
             }).done(function (data) {
                 $('#allItem').html("")
                 for (var item of data) {
                     var task = JSON.stringify(item);
-                    var category = '';
+                    var category = '| ';
                     for (i in item.category) {
-                        category += item.category[i].name + ' '
+                        category += item.category[i].name + ' | '
                     }
                     if (item.done == true) {
-                        $('#allItem').append(`<tr><td><input onclick="fun2(this.value)" type="checkbox" name="update" value='${task}' checked>   ${item.description} <br> Категория: ${category} </td></tr>`);
+                        $('#allItem').append(`<tr><td><input onclick="fun2(this.value)"
+                            type="checkbox" name="update" value='${task}' checked>
+                            ${item.description} <br> Категория: ${category}<br><br> </td></tr>`);
                     } else {
-                        $('#allItem').append(`<tr><td><input onclick="fun2(this.value)" type="checkbox" name="update" value='${task}'>   ${item.description} <br> Категория: ${category} </td></tr>`);
+                        $('#allItem').append(`<tr><td><input onclick="fun2(this.value)"
+                            type="checkbox" name="update" value='${task}'>
+                            ${item.description} <br> Категория: ${category} <br><br></td></tr>`);
                     }
                 }
             })
@@ -67,44 +71,58 @@
     }
 </script>
 <body>
-<div type="container">
-    <div class="container">
-    </div>
-    <div id="container1"></div>
-    <div id="main">
-        <div id="input" class="container" style="float: left;">
-            <div class="container" id="header" style="float: left;">
-                <ul style="display: block; width: 548px; float: left;">
-                    <li style="display:block; float:left;"></li>
-                </ul>
-            </div>
-            <div class="container" style="float: left; border-bottom: solid #ccc">
-                <label style="padding: 5px;">Все задания / Невыполненные задания
-                    <input type="checkbox" id="fil" value="fil" onclick="fun1()" checked>
-                </label>
-                <br>
-            </div>
-            <form action="add" method="post" style="float: left;">
-                <div class="form-group" style="padding: 10px; float: left;">
-                    <textarea style="width: 300px; height: 100px; resize: none" class="form-control" id="description"
-                              name="description" placeholder="Добавить задание"></textarea>
-                    <p>Категории</p>
-                    <select style="width: 300px; height: 100px; resize: none" class="form-control" name="cIds" id="cIds" multiple required >
-                    </select>
+<div id="main">
+    <div class="container" style="float: left; width: 100%; height: 250px;
+         background-color: #b1e2ea; border: solid #6a6a6a; border-top-left-radius: 20px;
+          border-top-right-radius: 20px; margin: 0; padding: 0;">
+        <div id="allTask" style="width: 15%; height: 100%; float: left; border-right: solid #6a6a6a;
+         margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;">
+            <label style="padding: 5px;">Все задания / Невыполненные задания
+                <input type="checkbox" id="fil" value="fil" onclick="fun1()" checked>
+            </label>
+        </div>
+        <div id="form" style="width: 70%; height: 100%; float: left; display: flex;
+            justify-content: center; align-items: center; border-right: solid #6a6a6a;">
+            <form action="add.do" method="post" style="float: left; width: 100%">
+                <div style="padding: 10px; float: left; width: 100%">
+                    <div id="textarea" style="float: left; width: 65%;">
+                        <textarea style="height: 100px; resize: none" class="form-control"
+                                  id="description"
+                                  name="description" placeholder="Добавить задание"></textarea>
+                    </div>
+                    <div id="cat" style="float: right; width: 30%;">
+                        <select style="height: 100px; resize: none" class="form-control" name="cIds"
+                                id="cIds"
+                                multiple required>
+                        </select>
+                    </div>
                     <div class="row float-right"
                          style="padding: 20px; height: 20px;">
-                        <button type="submit" class="btn btn-success">Добавить</button>
+                        <button type="submit" class="btn btn-primary">Добавить</button>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="container" style="float: left;">
+        <div class="container" id="header" style="float: left; width: 15%; height: 100%; margin: 0; padding: 0;
+          display: flex; justify-content: center; align-items: center;">
+            <ul style="width: 548px; float: left; margin: 0; padding: 0; text-align: center"></ul>
+        </div>
+    </div>
+    <div id="list" class="container" style="float: left; display: inline-block; height: auto;
+      background: #b1e2ea; border: solid #6a6a6a; border-bottom-left-radius: 10px;
+       border-bottom-right-radius: 10px; margin: 0; padding: 0;">
+        <div id="h1" class="container" style=" width: 100%; height: 100%; float: left;
+         display: flex; justify-content: center; align-items: center;">
+        </div>
+        <div id="tasks" style=" width: 100%; height: 100%; float: left;
+            display: flex; justify-content: center; align-items: center;">
             <form class="qq">
-                <table id="allItem">
+                <table id="allItem" style="width: 100%">
                 </table>
             </form>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>

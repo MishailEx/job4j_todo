@@ -4,8 +4,10 @@ $.ajax({
     url: 'http://localhost:8080/job4j_todo/auth.do',
     dataType: 'json'
 }).done(function (data) {
-    $('#header li:last').append(`<li style="display:block; float:left;"><a class="nav-link">${data.name}</a></li>`);
-    $('#header li:last').append(`<li style="display:block; float:left;"><a class="nav-link" href="logout.do" >Выйти</a></li>`);
+    $('#header ul:last').append(`<li style="list-style-type: none;  "><a class="nav-link">${data.name}</a></li>`);
+    $('#header ul:last').append(`<li style="list-style-type: none; ">
+        <a class="nav-link" href="logout.do"><button class="btn btn-primary">Выйти</button></a></li>`);
 }).fail(function () {
-    $('#header li:last').append(`<li style="display:block; float:left;"><a class="nav-link" href="login.html">Войти</a></li>`);
+    $('#header ul:last').append(`<li style="list-style-type: none;">
+        <a class="nav-link" href="login.html"><button class="btn btn-primary">Войти</button></a></li>`);
 });
